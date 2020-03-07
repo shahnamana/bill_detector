@@ -30,6 +30,8 @@ class _HomeState extends State<Home> {
   //Future<File> imageFile;
   File imageFile;
   File cropped;
+  //String data='';
+  var data = new List<String>();
   pickImageFromGallery(ImageSource source) async{
     /*setState(() {
       imageFile= ImagePicker.pickImage(source: source);
@@ -71,10 +73,14 @@ class _HomeState extends State<Home> {
     for (TextBlock block in readText.blocks) {
       for (TextLine line in block.lines) {
 
-          print(line.text);
+        data.add(line.text);
+
+        //print(line.text);
 
       }
     }
+    Navigator.pushReplacementNamed(context, '/final',arguments: {'result':data,'file':__selectedFile} );
+    //print(data);
   }
 
 
@@ -107,15 +113,18 @@ class _HomeState extends State<Home> {
     if(__selectedFile != null){
       return Image.file(
         __selectedFile,
-        width: width*0.5,
-        height: height*0.4,
+        //width: width*0.5,
+        //height: height*0.4,
         fit: BoxFit.cover,
 
       );
     } else{
-      return const Text(
-        'No Image selected',
-        textAlign: TextAlign.center,
+      return Container(
+        padding: EdgeInsets.fromLTRB(0, height*0.2, 0, 0),
+        child: const Text(
+          'No Image selected',
+          textAlign: TextAlign.center,
+        ),
       );
     }
   }
@@ -134,8 +143,23 @@ class _HomeState extends State<Home> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children :<Widget>[
-            showImage(),
-            RaisedButton(
+            Container(
+              height: height*0.5,
+              width: width*0.8,
+              child: ListView(
+                shrinkWrap: true,
+                children : <Widget>[
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(width*0.03,0,width*0.03,height*0.01),
+                    child: showImage(),
+                  ),
+                ],
+              ),
+            ),
+            /*SizedBox(
+              height: height*0.2,
+            ),*/
+            /*RaisedButton(
               onPressed: (){
                 pickImageFromGallery(ImageSource.gallery );
                 //Navigator.pushNamed(context, '/final');
@@ -144,9 +168,60 @@ class _HomeState extends State<Home> {
 
               },
               child: Text('Select Image'),
+            ),*/
+            //SizedBox(height: height*0.05,),
+            Container(
+              //padding: EdgeInsets.fromLTRB(width*0.02, 0, width*0.02, height*0.04),
+              width: width*0.9,
+              child: SliderButton(
+                action: () {
+                  pickImageFromGallery(ImageSource.gallery);
+                },
+                label: Text(
+                  "Slide to select image",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 17),
+                ),
+                icon: Icon(
+                  Icons.add_a_photo,
+                  size: width*0.07,
+                ),
+                backgroundColor: Colors.blue,
+                buttonColor: Colors.yellow,
+                alignLabel: Alignment.center,
+              ),
             ),
-            SizedBox(height: height*0.05,),
-            RaisedButton(
+            SizedBox(
+              height: height*0.02,
+,            ),
+            Container(
+              //padding: EdgeInsets.fromLTRB(width*0.02, 0, width*0.02, height*0.04),
+              width: width*0.9,
+              child: SliderButton(
+                action: () {
+                  readText();
+                },
+                label: Text(
+                  "Slide to extract text",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 17),
+                ),
+                icon: Icon(
+                  Icons.text_fields,
+                  size: width*0.07,
+                ),
+                backgroundColor: Colors.blue,
+                buttonColor: Colors.yellow,
+                alignLabel: Alignment.center,
+              ),
+            ),
+            /*RaisedButton(
               onPressed: (){
                 readText();
                 //Navigator.pushNamed(context, '/final');
@@ -155,11 +230,11 @@ class _HomeState extends State<Home> {
 
               },
               child: Text('Extract Text'),
-            ),
+            ),*/
           ],
         ),
       ),
-      bottomNavigationBar: Container(
+      /*bottomNavigationBar: Container(
         padding: EdgeInsets.fromLTRB(width*0.02, 0, width*0.02, height*0.04),
         child: SliderButton(
           action: () {
@@ -183,8 +258,9 @@ class _HomeState extends State<Home> {
           buttonColor: Colors.yellow,
           alignLabel: Alignment.center,
         ),
-      ),
+      ),*/
     );
   }
 }
+
 
