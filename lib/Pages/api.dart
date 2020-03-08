@@ -7,7 +7,8 @@ import 'dart:io';
 class Upload_img{
   String returnurl;
   Future<void> Upload(File imageFile) async {
-    var url;
+    //print("Inside ");
+    String url;
     var stream = new http.ByteStream(
         DelegatingStream.typed(imageFile.openRead()));
     var length = await imageFile.length();
@@ -20,16 +21,23 @@ class Upload_img{
     //contentType: new MediaType('image', 'png'));
 
     request.files.add(multipartFile);
-    var response = await request.send();
-    print(response.statusCode);
-    response.stream.transform(utf8.decoder).listen((value) {
-      print(value);
-      Map data=json.decode(value);
-      url=data['url'];
-      print(url);
-      returnurl =url;
-    }
-    );
+    var response = await request.send().then((response) {
+      response.stream.transform(utf8.decoder).listen((value) {
+        print(value);
+        Map data=json.decode(value);
+        returnurl=data['url'];
+        print(returnurl);
+        image.img=returnurl;
+        //returnurl =url;
+      }
+      );
+    });
+    //print(response.statusCode);
+
     //return url;
   }
+}
+
+class image{
+  static var img;
 }
