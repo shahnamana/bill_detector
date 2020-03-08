@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "353418532138",
+    "firebase_url": "https://billdetection-68327.firebaseio.com",
+    "project_id": "billdetection-68327",
+    "storage_bucket": "billdetection-68327.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:353418532138:android:e820dae9e56fc4c7363a53",
+        "android_client_info": {
+          "package_name": "com.nishit.bill_detector"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "353418532138-dtn2idf8mfrmmu750lara5fq890ug49f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5Hig6LNrE7kcYoZgHxRX1CkrNkX7ZbE0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "353418532138-dtn2idf8mfrmmu750lara5fq890ug49f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

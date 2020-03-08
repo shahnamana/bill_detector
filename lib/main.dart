@@ -12,7 +12,6 @@ import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:dio/dio.dart';
 import 'dart:convert';
 import 'package:dio/adapter.dart';
-//import 'package:path/path.dart';
 import 'package:async/async.dart';
 import 'package:bill_detector/Pages/api.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
@@ -31,10 +30,11 @@ void main() => runApp(MaterialApp(
 class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
+
 }
 
 class _HomeState extends State<Home> {
-  String url;
+  String url='http://172.16.100.96:8000/media/Output/image_cropper_1583632893335.jpg';
   File __selectedFile;
   //Future<File> imageFile;
   File imageFile;
@@ -70,14 +70,16 @@ class _HomeState extends State<Home> {
           lockAspectRatio: false,
         ),
       );
-      print(cropped.path);
+      /*print(cropped.path);
       Upload_img instance = Upload_img();
       await instance.Upload(cropped);
-      url = instance.returnurl;
+
+      url = image.img;
       print('back');
       print(url);
-      print(imageFile.path);
-      print(cropped.path);
+      //print(imageFile.path);
+      print(cropped.path);*/
+
       this.setState(() {
         __selectedFile=cropped;
       });
@@ -139,8 +141,8 @@ class _HomeState extends State<Home> {
       },
     );*/
     if(__selectedFile != null){
-      return Image.network(
-        url,
+      return Image.file(
+        __selectedFile,
         //width: width*0.5,
         //height: height*0.4,
         fit: BoxFit.cover,
