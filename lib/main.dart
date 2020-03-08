@@ -6,9 +6,17 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:edge_detection/edge_detection.dart';
 import 'package:image_cropper/image_cropper.dart';
-import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
 import 'package:bill_detector/Pages/final.dart';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
+import 'package:dio/dio.dart';
+import 'dart:convert';
+import 'package:dio/adapter.dart';
+//import 'package:path/path.dart';
+import 'package:async/async.dart';
+import 'package:bill_detector/Pages/api.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+
 
 void main() => runApp(MaterialApp(
   routes: {
@@ -16,6 +24,7 @@ void main() => runApp(MaterialApp(
     '/final': (context) => Final(),
   },
   home: Home(),
+  debugShowCheckedModeBanner: false,
 ));
 
 
@@ -25,24 +34,33 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-
+  String url;
   File __selectedFile;
   //Future<File> imageFile;
   File imageFile;
   File cropped;
+  var result;
   //String data='';
   var data = new List<String>();
+
+
   pickImageFromGallery(ImageSource source) async{
     /*setState(() {
       imageFile= ImagePicker.pickImage(source: source);
     });*/
-    imageFile= await ImagePicker.pickImage(source: source);
+    imageFile= await ImagePicker.pickImage(source: source,);
+
+    /*result=await FlutterImageCompress.compressAndGetFile(
+        imageFile.path, imageFile.path,
+
+    );*/
 
     if(imageFile!=null){
       cropped = await ImageCropper.cropImage(
         sourcePath: imageFile.path,
         /*aspectRatio: CropAspectRatio(
             ratioX:2,ratioY:1),*/
+
         compressQuality: 100,
         compressFormat: ImageCompressFormat.jpg,
         androidUiSettings: AndroidUiSettings(
@@ -52,11 +70,21 @@ class _HomeState extends State<Home> {
           lockAspectRatio: false,
         ),
       );
+      print(cropped.path);
+      Upload_img instance = Upload_img();
+      await instance.Upload(cropped);
+      url = instance.returnurl;
+      print('back');
+      print(url);
+      print(imageFile.path);
+      print(cropped.path);
       this.setState(() {
         __selectedFile=cropped;
       });
     }
   }
+
+
 
   Future readText() async{
     FirebaseVisionImage ourImage = FirebaseVisionImage.fromFile(__selectedFile);
@@ -111,12 +139,11 @@ class _HomeState extends State<Home> {
       },
     );*/
     if(__selectedFile != null){
-      return Image.file(
-        __selectedFile,
+      return Image.network(
+        url,
         //width: width*0.5,
         //height: height*0.4,
         fit: BoxFit.cover,
-
       );
     } else{
       return Container(
@@ -156,10 +183,19 @@ class _HomeState extends State<Home> {
                 ],
               ),
             ),
-            /*SizedBox(
-              height: height*0.2,
+            SizedBox(
+              height: height*0.03,
+            ),
+            /*Container(
+              height: height*0.6,
+              child: ClipPath(
+                child: Image.network('https://templates.invoicehome.com/invoice-template-us-neat-750px.png'),
+                clipper: new MyClipper(),
+              ),
             ),*/
-            /*RaisedButton(
+            RaisedButton(
+              color: Colors.blue[400],
+              padding: EdgeInsets.fromLTRB(width*0.18, height*0.02, width*0.18, height*0.02),
               onPressed: (){
                 pickImageFromGallery(ImageSource.gallery );
                 //Navigator.pushNamed(context, '/final');
@@ -167,10 +203,14 @@ class _HomeState extends State<Home> {
                 print(imagePath);*/
 
               },
-              child: Text('Select Image'),
-            ),*/
+              child: Text('Select Image',
+                style: TextStyle(
+                  fontSize: height*0.04,
+                ),
+              ),
+            ),
             //SizedBox(height: height*0.05,),
-            Container(
+            /*Container(
               //padding: EdgeInsets.fromLTRB(width*0.02, 0, width*0.02, height*0.04),
               width: width*0.9,
               child: SliderButton(
@@ -193,11 +233,11 @@ class _HomeState extends State<Home> {
                 buttonColor: Colors.yellow,
                 alignLabel: Alignment.center,
               ),
-            ),
+            ),*/
             SizedBox(
-              height: height*0.02,
-,            ),
-            Container(
+              height: height*0.03,
+            ),
+            /*Container(
               //padding: EdgeInsets.fromLTRB(width*0.02, 0, width*0.02, height*0.04),
               width: width*0.9,
               child: SliderButton(
@@ -220,8 +260,10 @@ class _HomeState extends State<Home> {
                 buttonColor: Colors.yellow,
                 alignLabel: Alignment.center,
               ),
-            ),
-            /*RaisedButton(
+            ),*/
+            RaisedButton(
+              color: Colors.blue[400],
+              padding: EdgeInsets.fromLTRB(width*0.2, height*0.02, width*0.2, height*0.02),
               onPressed: (){
                 readText();
                 //Navigator.pushNamed(context, '/final');
@@ -229,8 +271,11 @@ class _HomeState extends State<Home> {
                 print(imagePath);*/
 
               },
-              child: Text('Extract Text'),
-            ),*/
+              child: Text('Extract Text',
+                style: TextStyle(
+                  fontSize: height*0.04,),
+              ),
+            ),
           ],
         ),
       ),
@@ -263,4 +308,18 @@ class _HomeState extends State<Home> {
   }
 }
 
+/*class MyClipper extends CustomClipper<Path>{
+  @override
+  Path getClip(Size size){
+    var path=new Path();
+    path.lineTo(size.width*0.2, 0);
+    path.lineTo(size.width*0.2, size.height);
+    path.lineTo(size.width*0.8, size.height);
+    path.lineTo(size.width*0.8, 0);
+    path.close();
+    return path;
+  }
 
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
+}*/

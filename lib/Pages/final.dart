@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:bill_detector/main.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Final extends StatefulWidget {
   @override
@@ -63,7 +63,7 @@ class _FinalState extends State<Final> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: (){
-           Navigator.pushNamed(context, '/home');
+            Navigator.of(context).pushNamedAndRemoveUntil('/home', (route) => false);
           },
         ),
         title: Text(
@@ -84,7 +84,7 @@ class _FinalState extends State<Final> {
                   ),)
             ),
             Container(
-              height: height*0.5,
+              height: height*0.37,
               width: width*0.8,
               child: ListView(
                 shrinkWrap: true,
@@ -106,9 +106,9 @@ class _FinalState extends State<Final> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.fromLTRB(width*0.03,0,width*0.03,height*0.05),
+              padding: EdgeInsets.fromLTRB(width*0.03,0,width*0.03,height*0.02),
               child: Container(
-                height: height*0.4,
+                height: height*0.35,
                 width:width,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
