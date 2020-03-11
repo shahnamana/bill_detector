@@ -12,3 +12,8 @@ https://drive.google.com/file/d/13ALB67SgOurljYkqDUQ7fRrav6rmfOm6/view?usp=shari
 
 The Screenshot of the app
 
+<img src = "Screenshot/Screenshot_20200311-160925.jpg" width = "400px" height="700px">
+
+<img src = "Screenshot/Screenshot_20200311-161016.jpg" width = "400px" height="700px">
+
+<img src = "Screenshot/Screenshot_20200311-161416.jpg" width = "400px" height="700px">
